@@ -1,0 +1,29 @@
+declare @phoneNumber varchar(9)
+declare @serialNumber varchar(7)
+declare @fearfull smallint
+
+set @phoneNumber = '4079-3893'
+
+if (select count(*) from gps_terminal where phone_number = @phoneNumber) > 0 
+  begin
+    set @serialNumber = (select serial_number from gps_terminal where phone_number = @phoneNumber)
+    insert into gps_cust values (@serialNumber, '2022-06-03', 'RM_549', 13500, 27000, '무전기신규', 0)
+    return
+  end
+else
+  begin
+    set @serialNumber = (select max(serial_number) from gps_terminal where maeip_cust = 'ZZ_069')
+    set @fearfull = substring(@serialNumber, 3, 5) + 1         -- 1404 + 1 = 1405
+    set @serialNumber = 'SK0' + cast(@fearfull as varchar(4))  -- SK01405
+   
+    insert into gps_terminal values (@serialNumber, '2022-06-03', @phoneNumber, @serialNumber, 'ZZ_069', null, null) -- 무전기
+    insert into gps_cust values (@serialNumber, '2022-06-03', 'RM_549', 13500, 27000, '무전기신규', 0)
+  end
+
+
+
+
+
+
+
+

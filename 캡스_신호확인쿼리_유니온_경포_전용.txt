@@ -1,0 +1,20 @@
+select C.car_code, C.car_no, C.gps_number, G.carNum, G.record_time, G.wgs_x, G.wgs_Y, G.usgTyp, G.drvSts, G.gpsDt, G.Api_datetime,
+       convert( char(8), dateadd(s, datediff(second, G.gpsDt, G.api_datetime), ''), 114 ) 경과시간,
+       case when S.status in (2,3,4) then '가는차(현장행)'
+            when S.status = 1 then '공장안'
+            when S.status = 5 then '현장안'
+            when S.status = 6 then '오는차(이제막)'
+            when S.status in (7,8) then '오는차(공장행)' end 차량상태,
+       S.power_status
+     from vdbgps01.RM_5H9_Gps.dbo.cm_car C left outer join vdbgps01.adt_gps.dbo.compare_gps G
+                                                    on C.gps_number = G.gps_number
+                                       left outer join vdbgps01.RM_5H9_Gps.dbo.RM_5E4_car_status S
+                                                    on S.car_code = C.car_code
+    where isnull(C.gps_number, '') <> ''
+      and len(C.gps_number) = 5
+      and record_time >= '2023-05-01 00:00:00'
+      and C.factory_code = 'RM_5E4' 
+ order by G.gpsDt desc
+
+
+

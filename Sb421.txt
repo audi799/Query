@@ -1,0 +1,17 @@
+declare @year varchar(4)
+
+set @year = '2020'
+
+select J.Pummok_code, J.jepum_code, J.jepum_name vt_jepum_name, J.jepum_yakeo vt_jepum_yakeo, J.jepum_type vt_jepum_type,
+       J.box_ea vt_box_ea, J.danwi vt_danwi,
+       O.suryang,
+       P.pummok_name vt_pummok_name,
+       G.gubun_name vt_gubun_name
+     from cm_jepum J left outer join yu_jaego O
+                                  on O.year = @year
+                                 and O.pummok_code = J.pummok_code
+                                 and O.jepum_code = J.jepum_code
+                     left outer join cm_pummok P
+                                  on P.pummok_code = J.pummok_code
+                     left outer join cm_pummok_gubun G
+                                  on G.pummok_gubun = P.pummok_gubun

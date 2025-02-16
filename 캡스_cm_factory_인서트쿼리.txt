@@ -1,0 +1,7 @@
+select *
+     from cm_Factory
+
+insert into cm_factory (factory_code, factory_name, factory_gubun, map_x, map_y, map_radius, distance_ratio, 
+                        program_gubun, factory_group_code, link_data_server, wgs_x, wgs_y, gps_data_server)
+                values ('RM_337', '단양성원/쿄세라', 1, 314848, 389947, 120, 3, 3, 'RM_334', 'RM_337.dbo.', 370013160, 1282903860, 'Adt_Gps.dbo.')
+--                                                       map_x   map_y radius      GroupCode                  wgs_x      wgs_y

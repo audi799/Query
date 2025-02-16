@@ -1,0 +1,48 @@
+insert into gps_terminal values ('시리얼넘버', '2024-09-13', '0000-0000', null, 'ZZ_070', null, null) -- 지퍼,엑스퍼
+insert into gps_terminal values ('시리얼넘버', '2024-09-13', '0000-0000', '시리얼넘버', 'ZZ_069', null, null) -- 무전기
+insert into gps_terminal values ('시리얼넘버', '2024-09-13', '0000-0000', null, 'CM_085', null, null) -- Aper
+insert into gps_terminal values ('A100198', '2024-09-13', '1006-6982', 'M1220230219', 'CM_085', null, null) -- 캡스
+insert into gps_terminal values ('KYO0001', '2024-09-13', '0100-0001', null, 'CM_085', null, null) -- 쿄세라
+
+/*
+-- 캡스
+select *
+     from gps_terminal
+    where serial_number like 'A%'
+ order by serial_number desc
+
+
+
+-- 쿄세라
+select *
+     from gps_terminal
+    where serial_number like 'KY%'
+ order by serial_number desc
+*/
+
+-----------공통
+insert into gps_cust values ('시리얼넘버', '2024-09-13', 'RM_319', null, 7000, 'Aper신규', 0)
+
+
+
+
+
+----------------------------------------------------------------------------
+
+-- 쿄세라 유심변경 처리
+-- 기존단말 가람회수 정지 처리
+insert into gps_cust values ('KYO0099', '2024-09-13', 'CM_085', null, null, null, 1)
+
+-- 변경단말 등록 처리
+/*
+select *
+     from gps_terminal
+    where serial_number like 'KY%'
+ order by serial_number desc
+*/
+
+insert into gps_terminal values ('KYO1243', '2024-09-13', '0100-1226', null, 'CM_085', null, null) -- 쿄세라
+insert into gps_cust values ('KYO1223', '2024-09-13', 'RM_624', null, 9000, '단말변경', 0)
+
+
+----------------------------------------------------------------------------

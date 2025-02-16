@@ -1,0 +1,14 @@
+declare @carCode varchar(4)
+declare @gpsNumber varchar(13)
+
+set @carCode = '8981'
+set @gpsNumber = '010-8597-1929'
+
+if ( (select count(*) cnt from cm_car where car_code = @carCode) > 0 )
+begin
+  update cm_car set gps_number = @gpsNumber where car_code = @carCode  
+end
+else
+begin
+  insert into cm_car (car_code, car_no, gubun, unhaeng_yeobu) values (@carCode, @carCode, 1, 1)
+end

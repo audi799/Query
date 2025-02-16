@@ -1,0 +1,53 @@
+-- drop trigger tg_Car_Status_to_Car_Ipgo
+
+CREATE TRIGGER [tg_Car_Ipgo_Sort] ON dbo.Cm_Car AFTER INSERT, UPDATE, DELETE AS BEGIN SET NOCOUNT ON;
+DECLARE @modType as char(1); 
+declare @status as tinyint, @ipgoStatus as tinyint;
+SET @modType = 'A'; 
+
+IF EXISTS(SELECT * FROM DELETED) 
+BEGIN 
+  SET @modType = CASE WHEN EXISTS(SELECT * FROM INSERTED) THEN 'E' ELSE 'D' END 
+END 
+ELSE IF NOT EXISTS(SELECT * FROM INSERTED) RETURN; END 
+/*
+IF @modType = 'A' 
+BEGIN 
+
+if ((select count(*) from car_ipgo C, inserted I where I.car_code = C.car_code) > 0 )
+  begin
+    update car_ipgo set status = 1, ymd = convert(char(10), getdate(), 120), sigan = convert(char(8), getdate(), 114)
+        from car_ipgo C, inserted I
+       where I.car_code = C.car_code
+  end
+else
+  begin
+    insert into car_ipgo
+    (car_code, ymd, ipgoindex, sigan, status)
+    select car_code, convert(char(10), getdate(), 120), (select isnull(max(ipgoindex),0) + 1 from car_ipgo), convert(char(8), getdate(), 114), 1
+        from inserted 
+  end
+END 
+ELSE */IF @modType = 'E' 
+BEGIN 
+
+set @before_Unhaeng = (select unhaeng_yeobu from deleted)
+set @after_Unhaeng = (select unhaeng_yeobu from inserted)
+
+if @before_Unhaeng <> @after_Unhaeng
+  begin
+    car_ipgo_sort  
+  end
+END 
+/*
+ELSE 
+BEGIN 
+
+END*/
+
+
+
+
+
+
+

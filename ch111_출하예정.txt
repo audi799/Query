@@ -1,0 +1,71 @@
+declare @ymd varchar(10)
+
+set @ymd = '2020-02-27'
+
+select ymd, chulha_plan_no, sum(suryang) vt_nugye_suryang, count(*) vt_chulha_cnt
+     into #tmp_01
+     from yu_chulha
+    where ymd = @ymd
+ group by ymd, chulha_plan_no
+
+select P.Ymd, P.Nno, P.Cust_Code, P.Suryang, P.Sigan, 
+       P.Chulha_Endchk, P.Bigo, P.Chulha_Jisi,
+       case isnull(P.chulbal_gubun,0) when 1 then cast('연락' as varchar(4))
+                                      when 2 then cast('도착' as varchar(4))
+                                      when 3 then cast('출발' as varchar(4)) end vt_Chulbal_Name,
+       case when isnull(C.tel,'') <> '' then C.tel else C.tel_1 end vt_tel,
+       C.sangho vt_sangho,
+       T.vt_nugye_suryang, vt_chulha_cnt,
+       isnull(P.suryang,0) - isnull(T.vt_nugye_suryang,0) vt_janryang,
+       G.unban_name vt_unban_name
+     from yu_chulha_plan P left outer join cm_cust C
+                                        on C.cust_code = P.cust_code
+                           left outer join cm_unban_gubun G
+                                        on G.unban_gubun = P.unban_gubun
+                           left outer join #tmp_01 T
+                                        on T.ymd = P.ymd
+                                       and T.chulha_plan_no = P.nno
+    where P.ymd = @ymd
+
+drop table #tmp_01
+
+
+
+
+
+
+
+
+
+declare @ymd varchar(10)
+
+set @ymd = '2020-02-27'
+
+select ymd, chulha_plan_no, chulha_plan_sno, sum(suryang) vt_nugye_suryang, count(*) vt_chulha_cnt
+     into #tmp_01
+     from yu_chulha_jp
+    where ymd = @ymd
+ group by ymd, chulha_plan_no, chulha_plan_sno
+
+select JP.ymd, JP.nno, JP.sno, JP.pummok_code, JP.jepum_code, JP.suryang, JP.bigo,
+       T.vt_nugye_suryang, T.vt_chulha_cnt,
+       isnull(JP.suryang,0) - isnull(T.vt_nugye_suryang,0) vt_janryang,
+       P.pummok_name vt_pummok_name, G.gubun_name vt_gubun_name, J.jepum_yakeo
+     from yu_chulha_plan_jp JP left outer join #tmp_01 T
+                                            on T.ymd = JP.ymd
+                                           and T.chulha_plan_no = JP.nno
+                                           and T.chulha_plan_sno = JP.sno
+                               left outer join cm_pummok P
+                                            on P.pummok_code = JP.pummok_code
+                               left outer join cm_pummok_gubun G
+                                            on G.pummok_gubun = P.pummok_gubun
+                               left outer join cm_jepum J
+                                            on J.pummok_code = JP.pummok_code
+                                           and J.jepum_code = JP.jepum_code
+    where JP.ymd = @ymd
+
+drop table #tmp_01
+
+
+
+

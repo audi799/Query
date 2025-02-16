@@ -1,0 +1,26 @@
+-- Sb411
+/*
+
+select J.*, P.pummok_name, G.gubun_name
+     from cm_jepum J left outer join cm_pummok P
+                                  on P.pummok_code = J.pummok_code
+                     left outer join cm_pummok_gubun G
+                                  on G.pummok_gubun = P.pummok_gubun
+ order by G.gubun_name, P.pummok_name
+
+select I.*,
+       J.jepum_name vt_jepum_name, J.jepum_yakeo vt_jepum_yakeo,
+       P.pummok_name vt_pummok_name, P.pummok_yakeo vt_pummok_yakeo,
+       G.gubun_name vt_gubun_name,
+       C.sangho vt_maeip_sangho, C.vat_gubun vt_vat
+     from yu_ipgo I left outer join cm_jepum J
+                                 on J.pummok_code = I.pummok_code
+                                and J.jepum_code = I.jepum_code
+                    left outer join cm_pummok P
+                                 on P.pummok_code = I.pummok_code
+                    left outer join cm_pummok_gubun G
+                                 on G.pummok_gubun = P.pummok_gubun
+                    left outer join cm_cust C
+                                 on C.cust_code = I.maeip_cust
+
+*/
